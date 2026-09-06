@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { AuthService } from "../services/auth.service";
-import { asyncHandler } from "../middleware/error";
-import { AuthRequest } from "../middleware/auth";
+import { AuthService } from "../services/auth.service.js";
+import { asyncHandler } from "../middleware/error.js";
+import { AuthRequest } from "../middleware/auth.js";
 
 export class AuthController {
   static register = asyncHandler(async (req: Request, res: Response) => {
@@ -45,7 +45,7 @@ export class AuthController {
   });
 
   static updateUser = asyncHandler(async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const id = req.params.id as string;
     const { name, email, password, role } = req.body;
 
     const user = await AuthService.updateUser(id, { name, email, password, role });
@@ -57,7 +57,7 @@ export class AuthController {
   });
 
   static deleteUser = asyncHandler(async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const id = req.params.id as string;
 
     const result = await AuthService.deleteUser(id);
 

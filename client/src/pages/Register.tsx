@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import api from "../lib/api";
 import { useAuth } from "../contexts/AuthContext";
 
-const Login = () => {
+const Register = () => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
@@ -13,13 +16,25 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
     setLoading(true);
 
     try {
+      await api.post("/auth/register", {
+        name,
+        email,
+        password,
+        role: "SALES_AGENT",
+      });
       await login(email, password);
       navigate("/");
     } catch (err: any) {
-      setError(err.response?.data?.error || "Login failed");
+      setError(err.response?.data?.error || "Registration failed");
     } finally {
       setLoading(false);
     }
@@ -44,7 +59,7 @@ const Login = () => {
           width: "400px",
         }}
       >
-        <h2 style={{ marginBottom: "20px", textAlign: "center" }}>CRM Login</h2>
+        <h2 style={{ marginBottom: "20px", textAlign: "center" }}>Create Account</h2>
 
         {error && (
           <div
@@ -62,13 +77,27 @@ const Login = () => {
 
         <form onSubmit={handleSubmit}>
           <div style={{ marginBottom: "15px" }}>
-            <label
+            <label style={{ display: "block", marginBottom: "5px", fontWeight: "500" }}>
+              Name
+            </label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Enter your name"
+              required
               style={{
-                display: "block",
-                marginBottom: "5px",
-                fontWeight: "500",
+                width: "100%",
+                padding: "10px",
+                border: "1px solid #ddd",
+                borderRadius: "4px",
+                fontSize: "14px",
               }}
-            >
+            />
+          </div>
+
+          <div style={{ marginBottom: "15px" }}>
+            <label style={{ display: "block", marginBottom: "5px", fontWeight: "500" }}>
               Email
             </label>
             <input
@@ -87,22 +116,38 @@ const Login = () => {
             />
           </div>
 
-          <div style={{ marginBottom: "20px" }}>
-            <label
-              style={{
-                display: "block",
-                marginBottom: "5px",
-                fontWeight: "500",
-              }}
-            >
+          <div style={{ marginBottom: "15px" }}>
+            <label style={{ display: "block", marginBottom: "5px", fontWeight: "500" }}>
               Password
             </label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
+              placeholder="Create a password"
               required
+              minLength={6}
+              style={{
+                width: "100%",
+                padding: "10px",
+                border: "1px solid #ddd",
+                borderRadius: "4px",
+                fontSize: "14px",
+              }}
+            />
+          </div>
+
+          <div style={{ marginBottom: "20px" }}>
+            <label style={{ display: "block", marginBottom: "5px", fontWeight: "500" }}>
+              Confirm Password
+            </label>
+            <input
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              placeholder="Confirm your password"
+              required
+              minLength={6}
               style={{
                 width: "100%",
                 padding: "10px",
@@ -128,14 +173,14 @@ const Login = () => {
               fontWeight: "500",
             }}
           >
-            {loading ? "Logging in..." : "Login"}
+            {loading ? "Creating account..." : "Register"}
           </button>
         </form>
 
         <p style={{ textAlign: "center", marginTop: "20px", color: "#666" }}>
-          Don't have an account?{" "}
-          <Link to="/register" style={{ color: "#4ade80", textDecoration: "none" }}>
-            Register
+          Already have an account?{" "}
+          <Link to="/login" style={{ color: "#4ade80", textDecoration: "none" }}>
+            Login
           </Link>
         </p>
       </div>
@@ -143,4 +188,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;

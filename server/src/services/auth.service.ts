@@ -1,8 +1,8 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import prisma from "../config/prisma";
-import { config } from "../config";
-import { AppError } from "../middleware/error";
+import prisma from "../config/prisma.js";
+import { config } from "../config/index.js";
+import { AppError } from "../middleware/error.js";
 
 interface CreateUserInput {
   name: string;

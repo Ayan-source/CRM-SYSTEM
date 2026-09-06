@@ -7,6 +7,7 @@ import Customers from "./pages/Customers";
 import Leads from "./pages/Leads";
 import Inbox from "./pages/Inbox";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route
             path="/"
             element={

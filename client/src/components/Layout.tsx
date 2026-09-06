@@ -1,5 +1,13 @@
-import { Outlet, NavLink, useNavigate } from "react-router-dom";
+import { Outlet, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+
+const getPageTitle = (pathname: string) => {
+  if (pathname === "/") return "Dashboard";
+  if (pathname.startsWith("/customers")) return "Customers";
+  if (pathname.startsWith("/leads")) return "Leads";
+  if (pathname.startsWith("/inbox")) return "Inbox";
+  return "CRM";
+};
 
 const Sidebar = () => {
   const { user, logout } = useAuth();
@@ -61,15 +69,20 @@ const Sidebar = () => {
 };
 
 const Layout = () => {
+  const { user } = useAuth();
+  const location = useLocation();
+  const pageTitle = getPageTitle(location.pathname);
+  const avatarInitial = user?.name?.charAt(0).toUpperCase() || "U";
+
   return (
     <div className="layout">
       <Sidebar />
       <main className="main-content">
         <div className="top-navbar">
-          <h1 className="page-title">Dashboard</h1>
+          <h1 className="page-title">{pageTitle}</h1>
           <div className="user-info">
-            <span>A</span>
-            <div className="user-avatar">A</div>
+            <span>{user?.name}</span>
+            <div className="user-avatar">{avatarInitial}</div>
           </div>
         </div>
         <Outlet />

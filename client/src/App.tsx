@@ -4,6 +4,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Layout from "./components/Layout";
 import Dashboard from "./pages/Dashboard";
 import Customers from "./pages/Customers";
+import CustomerDetail from "./pages/CustomerDetail";
 import Leads from "./pages/Leads";
 import Inbox from "./pages/Inbox";
 import Login from "./pages/Login";
@@ -26,6 +27,7 @@ function App() {
           >
             <Route index element={<Dashboard />} />
             <Route path="customers" element={<Customers />} />
+            <Route path="customers/:id" element={<CustomerDetail />} />
             <Route path="leads" element={<Leads />} />
             <Route path="inbox" element={<Inbox />} />
           </Route>

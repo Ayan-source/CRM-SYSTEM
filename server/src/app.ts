@@ -1,11 +1,12 @@
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
-import { config } from "./config";
-import logger, { stream } from "./utils/logger";
-import { errorHandler } from "./middleware/error";
-import healthRoutes from "./routes/health.routes";
-import authRoutes from "./routes/auth.routes";
+import { config } from "./config/index.js";
+import logger, { stream } from "./utils/logger.js";
+import { errorHandler } from "./middleware/error.js";
+import healthRoutes from "./routes/health.routes.js";
+import authRoutes from "./routes/auth.routes.js";
+import customerRoutes from "./routes/customer.routes.js";
 
 const app = express();
 
@@ -32,6 +33,7 @@ app.use(
 
 app.use("/api/health", healthRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/customers", customerRoutes);
 
 app.use(errorHandler);
 

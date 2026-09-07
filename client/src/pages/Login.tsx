@@ -26,49 +26,19 @@ const Login = () => {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-        backgroundColor: "#f5f5f5",
-      }}
-    >
-      <div
-        style={{
-          padding: "40px",
-          background: "white",
-          borderRadius: "8px",
-          boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
-          width: "400px",
-        }}
-      >
-        <h2 style={{ marginBottom: "20px", textAlign: "center" }}>CRM Login</h2>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="bg-white p-10 rounded-lg shadow-lg w-full max-w-md">
+        <h2 className="text-2xl font-bold text-center mb-6">CRM Login</h2>
 
         {error && (
-          <div
-            style={{
-              padding: "10px",
-              backgroundColor: "#fee2e2",
-              color: "#dc2626",
-              borderRadius: "4px",
-              marginBottom: "15px",
-            }}
-          >
+          <div className="bg-red-50 text-red-600 p-3 rounded mb-4 text-sm">
             {error}
           </div>
         )}
 
         <form onSubmit={handleSubmit}>
-          <div style={{ marginBottom: "15px" }}>
-            <label
-              style={{
-                display: "block",
-                marginBottom: "5px",
-                fontWeight: "500",
-              }}
-            >
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
               Email
             </label>
             <input
@@ -77,24 +47,12 @@ const Login = () => {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
               required
-              style={{
-                width: "100%",
-                padding: "10px",
-                border: "1px solid #ddd",
-                borderRadius: "4px",
-                fontSize: "14px",
-              }}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-400"
             />
           </div>
 
-          <div style={{ marginBottom: "20px" }}>
-            <label
-              style={{
-                display: "block",
-                marginBottom: "5px",
-                fontWeight: "500",
-              }}
-            >
+          <div className="mb-5">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
               Password
             </label>
             <input
@@ -103,38 +61,26 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
               required
-              style={{
-                width: "100%",
-                padding: "10px",
-                border: "1px solid #ddd",
-                borderRadius: "4px",
-                fontSize: "14px",
-              }}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-400"
             />
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            style={{
-              width: "100%",
-              padding: "12px",
-              backgroundColor: loading ? "#9ca3af" : "#4ade80",
-              color: "white",
-              border: "none",
-              borderRadius: "4px",
-              cursor: loading ? "not-allowed" : "pointer",
-              fontSize: "16px",
-              fontWeight: "500",
-            }}
+            className={`w-full py-3 rounded-md text-white font-medium transition-colors cursor-pointer ${
+              loading
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-green-400 hover:bg-green-500"
+            }`}
           >
             {loading ? "Logging in..." : "Login"}
           </button>
         </form>
 
-        <p style={{ textAlign: "center", marginTop: "20px", color: "#666" }}>
+        <p className="text-center mt-5 text-gray-500 text-sm">
           Don't have an account?{" "}
-          <Link to="/register" style={{ color: "#4ade80", textDecoration: "none" }}>
+          <Link to="/register" className="text-green-500 hover:underline">
             Register
           </Link>
         </p>

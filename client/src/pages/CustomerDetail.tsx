@@ -26,11 +26,11 @@ const CustomerDetail = () => {
   };
 
   if (loading) {
-    return <div style={{ textAlign: "center", padding: "40px" }}>Loading...</div>;
+    return <div className="text-center py-10 text-gray-500">Loading...</div>;
   }
 
   if (!customer) {
-    return <div style={{ textAlign: "center", padding: "40px" }}>Customer not found</div>;
+    return <div className="text-center py-10 text-gray-500">Customer not found</div>;
   }
 
   const tabs = [
@@ -44,31 +44,25 @@ const CustomerDetail = () => {
     <div>
       <Link
         to="/customers"
-        style={{ color: "#4ade80", textDecoration: "none", marginBottom: "15px", display: "block" }}
+        className="text-green-500 hover:underline mb-4 inline-block"
       >
-        ← Back to Customers
+        &larr; Back to Customers
       </Link>
 
-      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "20px" }}>
+      <div className="flex justify-between items-center mb-5">
         <div>
-          <h2>{customer.name}</h2>
+          <h2 className="text-xl font-semibold">{customer.name}</h2>
           {customer.companyName && (
-            <p style={{ color: "#666", margin: "5px 0 0" }}>{customer.companyName}</p>
+            <p className="text-gray-500 text-sm mt-1">{customer.companyName}</p>
           )}
         </div>
-        <div style={{ display: "flex", gap: "10px" }}>
+        <div className="flex gap-2">
           {customer.phone && (
             <a
               href={`https://wa.me/${customer.phone.replace(/\D/g, "")}`}
               target="_blank"
               rel="noopener noreferrer"
-              style={{
-                padding: "8px 16px",
-                backgroundColor: "#25d366",
-                color: "white",
-                borderRadius: "6px",
-                textDecoration: "none",
-              }}
+              className="px-4 py-2 bg-green-500 text-white rounded-md text-sm no-underline hover:bg-green-600"
             >
               WhatsApp
             </a>
@@ -76,13 +70,7 @@ const CustomerDetail = () => {
           {customer.email && (
             <a
               href={`mailto:${customer.email}`}
-              style={{
-                padding: "8px 16px",
-                backgroundColor: "#4285f4",
-                color: "white",
-                borderRadius: "6px",
-                textDecoration: "none",
-              }}
+              className="px-4 py-2 bg-blue-500 text-white rounded-md text-sm no-underline hover:bg-blue-600"
             >
               Email
             </a>
@@ -90,20 +78,16 @@ const CustomerDetail = () => {
         </div>
       </div>
 
-      <div style={{ display: "flex", gap: "10px", marginBottom: "20px", borderBottom: "1px solid #eee" }}>
+      <div className="flex gap-2 mb-5 border-b border-gray-200">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id as any)}
-            style={{
-              padding: "10px 20px",
-              background: "none",
-              border: "none",
-              borderBottom: activeTab === tab.id ? "2px solid #4ade80" : "2px solid transparent",
-              cursor: "pointer",
-              fontWeight: activeTab === tab.id ? "600" : "400",
-              color: activeTab === tab.id ? "#333" : "#666",
-            }}
+            className={`px-5 py-2.5 bg-transparent border-none cursor-pointer transition-colors ${
+              activeTab === tab.id
+                ? "font-semibold text-gray-800 border-b-2 border-green-400"
+                : "text-gray-500 hover:text-gray-700"
+            }`}
           >
             {tab.label}
           </button>
@@ -111,61 +95,54 @@ const CustomerDetail = () => {
       </div>
 
       {activeTab === "overview" && (
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }}>
-          <div style={{ background: "white", padding: "20px", borderRadius: "8px" }}>
-            <h3 style={{ marginBottom: "15px", fontSize: "16px" }}>Contact Information</h3>
-            <div style={{ display: "grid", gap: "10px" }}>
+        <div className="grid grid-cols-2 gap-5">
+          <div className="bg-white p-5 rounded-lg">
+            <h3 className="text-base font-semibold mb-4">Contact Information</h3>
+            <div className="space-y-3">
               <div>
-                <span style={{ color: "#666", fontSize: "14px" }}>Phone</span>
-                <p style={{ margin: "2px 0 0" }}>{customer.phone || "-"}</p>
+                <span className="text-gray-500 text-sm">Phone</span>
+                <p className="mt-0.5">{customer.phone || "-"}</p>
               </div>
               <div>
-                <span style={{ color: "#666", fontSize: "14px" }}>Email</span>
-                <p style={{ margin: "2px 0 0" }}>{customer.email || "-"}</p>
+                <span className="text-gray-500 text-sm">Email</span>
+                <p className="mt-0.5">{customer.email || "-"}</p>
               </div>
               <div>
-                <span style={{ color: "#666", fontSize: "14px" }}>Address</span>
-                <p style={{ margin: "2px 0 0" }}>{customer.address || "-"}</p>
+                <span className="text-gray-500 text-sm">Address</span>
+                <p className="mt-0.5">{customer.address || "-"}</p>
               </div>
               <div>
-                <span style={{ color: "#666", fontSize: "14px" }}>City</span>
-                <p style={{ margin: "2px 0 0" }}>{customer.city || "-"}</p>
+                <span className="text-gray-500 text-sm">City</span>
+                <p className="mt-0.5">{customer.city || "-"}</p>
               </div>
               <div>
-                <span style={{ color: "#666", fontSize: "14px" }}>Source</span>
-                <p style={{ margin: "2px 0 0" }}>{customer.source}</p>
+                <span className="text-gray-500 text-sm">Source</span>
+                <p className="mt-0.5">{customer.source}</p>
               </div>
             </div>
           </div>
 
-          <div style={{ background: "white", padding: "20px", borderRadius: "8px" }}>
-            <h3 style={{ marginBottom: "15px", fontSize: "16px" }}>Assigned Agent</h3>
+          <div className="bg-white p-5 rounded-lg">
+            <h3 className="text-base font-semibold mb-4">Assigned Agent</h3>
             {customer.assignedUser ? (
               <div>
-                <p style={{ fontWeight: "500" }}>{customer.assignedUser.name}</p>
-                <p style={{ color: "#666", fontSize: "14px" }}>{customer.assignedUser.email}</p>
+                <p className="font-medium">{customer.assignedUser.name}</p>
+                <p className="text-gray-500 text-sm">{customer.assignedUser.email}</p>
               </div>
             ) : (
-              <p style={{ color: "#999" }}>Not assigned</p>
+              <p className="text-gray-400">Not assigned</p>
             )}
           </div>
 
-          <div style={{ background: "white", padding: "20px", borderRadius: "8px" }}>
-            <h3 style={{ marginBottom: "15px", fontSize: "16px" }}>Recent Tasks</h3>
+          <div className="bg-white p-5 rounded-lg">
+            <h3 className="text-base font-semibold mb-4">Recent Tasks</h3>
             {customer.tasks.length > 0 ? (
-              <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+              <ul className="list-none p-0 m-0 space-y-2">
                 {customer.tasks.map((task) => (
-                  <li
-                    key={task.id}
-                    style={{
-                      padding: "8px 0",
-                      borderBottom: "1px solid #eee",
-                      fontSize: "14px",
-                    }}
-                  >
+                  <li key={task.id} className="pb-2 border-b border-gray-100 text-sm">
                     {task.title}
                     {task.dueDate && (
-                      <span style={{ color: "#666", marginLeft: "10px" }}>
+                      <span className="text-gray-500 ml-2">
                         Due: {new Date(task.dueDate).toLocaleDateString()}
                       </span>
                     )}
@@ -173,43 +150,25 @@ const CustomerDetail = () => {
                 ))}
               </ul>
             ) : (
-              <p style={{ color: "#999" }}>No pending tasks</p>
+              <p className="text-gray-400">No pending tasks</p>
             )}
           </div>
 
-          <div style={{ background: "white", padding: "20px", borderRadius: "8px" }}>
-            <h3 style={{ marginBottom: "15px", fontSize: "16px" }}>Recent Leads</h3>
+          <div className="bg-white p-5 rounded-lg">
+            <h3 className="text-base font-semibold mb-4">Recent Leads</h3>
             {customer.leads.length > 0 ? (
-              <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+              <ul className="list-none p-0 m-0 space-y-2">
                 {customer.leads.map((lead) => (
-                  <li
-                    key={lead.id}
-                    style={{
-                      padding: "8px 0",
-                      borderBottom: "1px solid #eee",
-                      fontSize: "14px",
-                    }}
-                  >
+                  <li key={lead.id} className="pb-2 border-b border-gray-100 text-sm">
                     {lead.title}
                     <span
-                      style={{
-                        marginLeft: "10px",
-                        padding: "2px 8px",
-                        borderRadius: "12px",
-                        fontSize: "12px",
-                        backgroundColor:
-                          lead.status === "WON"
-                            ? "#dcfce7"
-                            : lead.status === "LOST"
-                            ? "#fee2e2"
-                            : "#dbeafe",
-                        color:
-                          lead.status === "WON"
-                            ? "#16a34a"
-                            : lead.status === "LOST"
-                            ? "#dc2626"
-                            : "#2563eb",
-                      }}
+                      className={`ml-2 px-2 py-0.5 rounded-full text-xs ${
+                        lead.status === "WON"
+                          ? "bg-green-100 text-green-700"
+                          : lead.status === "LOST"
+                          ? "bg-red-100 text-red-700"
+                          : "bg-blue-100 text-blue-700"
+                      }`}
                     >
                       {lead.status}
                     </span>
@@ -217,37 +176,33 @@ const CustomerDetail = () => {
                 ))}
               </ul>
             ) : (
-              <p style={{ color: "#999" }}>No leads yet</p>
+              <p className="text-gray-400">No leads yet</p>
             )}
           </div>
         </div>
       )}
 
       {activeTab === "leads" && (
-        <div style={{ background: "white", padding: "20px", borderRadius: "8px" }}>
+        <div className="bg-white p-5 rounded-lg">
           {customer.leads.length === 0 ? (
-            <p style={{ color: "#999", textAlign: "center", padding: "20px" }}>No leads</p>
+            <p className="text-gray-400 text-center py-5">No leads</p>
           ) : (
-            <table style={{ width: "100%", borderCollapse: "collapse" }}>
+            <table className="w-full">
               <thead>
-                <tr style={{ borderBottom: "1px solid #eee" }}>
-                  <th style={{ padding: "10px", textAlign: "left" }}>Title</th>
-                  <th style={{ padding: "10px", textAlign: "left" }}>Status</th>
-                  <th style={{ padding: "10px", textAlign: "left" }}>Value</th>
-                  <th style={{ padding: "10px", textAlign: "left" }}>Created</th>
+                <tr className="border-b border-gray-100">
+                  <th className="text-left py-2 font-medium">Title</th>
+                  <th className="text-left py-2 font-medium">Status</th>
+                  <th className="text-left py-2 font-medium">Value</th>
+                  <th className="text-left py-2 font-medium">Created</th>
                 </tr>
               </thead>
               <tbody>
                 {customer.leads.map((lead) => (
-                  <tr key={lead.id} style={{ borderBottom: "1px solid #eee" }}>
-                    <td style={{ padding: "10px" }}>{lead.title}</td>
-                    <td style={{ padding: "10px" }}>{lead.status}</td>
-                    <td style={{ padding: "10px" }}>
-                      {lead.value ? `Rs. ${lead.value.toLocaleString()}` : "-"}
-                    </td>
-                    <td style={{ padding: "10px" }}>
-                      {new Date(lead.createdAt).toLocaleDateString()}
-                    </td>
+                  <tr key={lead.id} className="border-b border-gray-100">
+                    <td className="py-2">{lead.title}</td>
+                    <td className="py-2">{lead.status}</td>
+                    <td className="py-2">{lead.value ? `Rs. ${lead.value.toLocaleString()}` : "-"}</td>
+                    <td className="py-2">{new Date(lead.createdAt).toLocaleDateString()}</td>
                   </tr>
                 ))}
               </tbody>
@@ -257,27 +212,21 @@ const CustomerDetail = () => {
       )}
 
       {activeTab === "conversations" && (
-        <div style={{ background: "white", padding: "20px", borderRadius: "8px" }}>
+        <div className="bg-white p-5 rounded-lg">
           {customer.conversations.length === 0 ? (
-            <p style={{ color: "#999", textAlign: "center", padding: "20px" }}>No conversations</p>
+            <p className="text-gray-400 text-center py-5">No conversations</p>
           ) : (
-            <div>
+            <div className="space-y-3">
               {customer.conversations.map((conv) => (
-                <div
-                  key={conv.id}
-                  style={{
-                    padding: "15px",
-                    borderBottom: "1px solid #eee",
-                  }}
-                >
-                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "5px" }}>
-                    <span style={{ fontWeight: "500" }}>{conv.channel}</span>
-                    <span style={{ color: "#666", fontSize: "12px" }}>
+                <div key={conv.id} className="pb-3 border-b border-gray-100">
+                  <div className="flex justify-between mb-1">
+                    <span className="font-medium">{conv.channel}</span>
+                    <span className="text-gray-500 text-xs">
                       {conv.lastMessageAt && new Date(conv.lastMessageAt).toLocaleString()}
                     </span>
                   </div>
                   {conv.messages[0] && (
-                    <p style={{ color: "#666", fontSize: "14px", margin: 0 }}>
+                    <p className="text-gray-500 text-sm m-0">
                       {conv.messages[0].content.substring(0, 100)}
                       {conv.messages[0].content.length > 100 && "..."}
                     </p>
@@ -290,21 +239,15 @@ const CustomerDetail = () => {
       )}
 
       {activeTab === "notes" && (
-        <div style={{ background: "white", padding: "20px", borderRadius: "8px" }}>
+        <div className="bg-white p-5 rounded-lg">
           {customer.notes.length === 0 ? (
-            <p style={{ color: "#999", textAlign: "center", padding: "20px" }}>No notes</p>
+            <p className="text-gray-400 text-center py-5">No notes</p>
           ) : (
-            <div>
+            <div className="space-y-3">
               {customer.notes.map((note) => (
-                <div
-                  key={note.id}
-                  style={{
-                    padding: "15px",
-                    borderBottom: "1px solid #eee",
-                  }}
-                >
-                  <p style={{ margin: "0 0 5px" }}>{note.content}</p>
-                  <span style={{ color: "#666", fontSize: "12px" }}>
+                <div key={note.id} className="pb-3 border-b border-gray-100">
+                  <p className="m-0 mb-1">{note.content}</p>
+                  <span className="text-gray-500 text-xs">
                     {new Date(note.createdAt).toLocaleString()}
                   </span>
                 </div>

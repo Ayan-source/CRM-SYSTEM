@@ -62,136 +62,93 @@ const CustomerModal = ({ customer, onClose }: CustomerModalProps) => {
     }
   };
 
-  const inputStyle = {
-    width: "100%",
-    padding: "10px",
-    border: "1px solid #ddd",
-    borderRadius: "4px",
-    fontSize: "14px",
-  };
-
-  const labelStyle = {
-    display: "block",
-    marginBottom: "5px",
-    fontWeight: "500" as const,
-    fontSize: "14px",
-  };
-
   return (
     <div
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: "rgba(0,0,0,0.5)",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        zIndex: 1000,
-      }}
+      className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div
-        style={{
-          background: "white",
-          borderRadius: "8px",
-          padding: "30px",
-          width: "500px",
-          maxHeight: "90vh",
-          overflow: "auto",
-        }}
-      >
-        <h3 style={{ marginBottom: "20px" }}>
+      <div className="bg-white rounded-lg p-7 w-full max-w-lg max-h-[90vh] overflow-auto">
+        <h3 className="text-lg font-semibold mb-5">
           {customer ? "Edit Customer" : "Add Customer"}
         </h3>
 
         {error && (
-          <div
-            style={{
-              padding: "10px",
-              backgroundColor: "#fee2e2",
-              color: "#dc2626",
-              borderRadius: "4px",
-              marginBottom: "15px",
-            }}
-          >
+          <div className="bg-red-50 text-red-600 p-3 rounded mb-4 text-sm">
             {error}
           </div>
         )}
 
         <form onSubmit={handleSubmit}>
-          <div style={{ marginBottom: "15px" }}>
-            <label style={labelStyle}>Name *</label>
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 mb-1">Name *</label>
             <input
               type="text"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               required
-              style={inputStyle}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-400"
             />
           </div>
 
-          <div style={{ marginBottom: "15px" }}>
-            <label style={labelStyle}>Company</label>
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 mb-1">Company</label>
             <input
               type="text"
               value={formData.companyName}
               onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
-              style={inputStyle}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-400"
             />
           </div>
 
-          <div style={{ display: "flex", gap: "15px", marginBottom: "15px" }}>
-            <div style={{ flex: 1 }}>
-              <label style={labelStyle}>Email</label>
+          <div className="flex gap-4 mb-4">
+            <div className="flex-1">
+              <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
               <input
                 type="email"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                style={inputStyle}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-400"
               />
             </div>
-            <div style={{ flex: 1 }}>
-              <label style={labelStyle}>Phone</label>
+            <div className="flex-1">
+              <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
               <input
                 type="tel"
                 value={formData.phone}
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                style={inputStyle}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-400"
               />
             </div>
           </div>
 
-          <div style={{ marginBottom: "15px" }}>
-            <label style={labelStyle}>Address</label>
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>
             <input
               type="text"
               value={formData.address}
               onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-              style={inputStyle}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-400"
             />
           </div>
 
-          <div style={{ display: "flex", gap: "15px", marginBottom: "20px" }}>
-            <div style={{ flex: 1 }}>
-              <label style={labelStyle}>City</label>
+          <div className="flex gap-4 mb-5">
+            <div className="flex-1">
+              <label className="block text-sm font-medium text-gray-700 mb-1">City</label>
               <input
                 type="text"
                 value={formData.city}
                 onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                style={inputStyle}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-400"
               />
             </div>
-            <div style={{ flex: 1 }}>
-              <label style={labelStyle}>Source</label>
+            <div className="flex-1">
+              <label className="block text-sm font-medium text-gray-700 mb-1">Source</label>
               <select
                 value={formData.source}
                 onChange={(e) => setFormData({ ...formData, source: e.target.value })}
-                style={inputStyle}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-400"
               >
                 <option value="MANUAL">Manual</option>
                 <option value="WHATSAPP">WhatsApp</option>
@@ -202,31 +159,22 @@ const CustomerModal = ({ customer, onClose }: CustomerModalProps) => {
             </div>
           </div>
 
-          <div style={{ display: "flex", gap: "10px", justifyContent: "flex-end" }}>
+          <div className="flex gap-3 justify-end">
             <button
               type="button"
               onClick={onClose}
-              style={{
-                padding: "10px 20px",
-                backgroundColor: "#f3f4f6",
-                border: "none",
-                borderRadius: "4px",
-                cursor: "pointer",
-              }}
+              className="px-5 py-2.5 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors cursor-pointer"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading}
-              style={{
-                padding: "10px 20px",
-                backgroundColor: loading ? "#9ca3af" : "#4ade80",
-                color: "white",
-                border: "none",
-                borderRadius: "4px",
-                cursor: loading ? "not-allowed" : "pointer",
-              }}
+              className={`px-5 py-2.5 text-white rounded-md transition-colors cursor-pointer ${
+                loading
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-green-400 hover:bg-green-500"
+              }`}
             >
               {loading ? "Saving..." : customer ? "Update" : "Create"}
             </button>

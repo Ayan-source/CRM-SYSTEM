@@ -30,7 +30,7 @@ export class CustomerController {
   });
 
   static getById = asyncHandler(async (req: AuthRequest, res: Response) => {
-    const customer = await CustomerService.getById(req.params.id);
+    const customer = await CustomerService.getById(req.params.id as string);
 
     res.json({
       success: true,
@@ -39,7 +39,7 @@ export class CustomerController {
   });
 
   static update = asyncHandler(async (req: AuthRequest, res: Response) => {
-    const customer = await CustomerService.update(req.params.id, req.body);
+    const customer = await CustomerService.update(req.params.id as string, req.body);
 
     res.json({
       success: true,
@@ -48,7 +48,7 @@ export class CustomerController {
   });
 
   static delete = asyncHandler(async (req: AuthRequest, res: Response) => {
-    const result = await CustomerService.delete(req.params.id);
+    const result = await CustomerService.delete(req.params.id as string);
 
     res.json({
       success: true,

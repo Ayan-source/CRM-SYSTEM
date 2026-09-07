@@ -44,6 +44,16 @@ export interface Lead {
   source: string;
   createdAt: string;
   updatedAt: string;
+  customer: Pick<Customer, "id" | "name" | "companyName" | "phone">;
+  pipelineStage: Pick<PipelineStage, "id" | "name"> | null;
+  assignedUser: Pick<User, "id" | "name"> | null;
+}
+
+export interface PipelineStage {
+  id: string;
+  name: string;
+  order: number;
+  leads?: Lead[];
 }
 
 export interface Conversation {

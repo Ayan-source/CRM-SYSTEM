@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import api from "../lib/api";
 import CustomerModal from "../components/CustomerModal";
@@ -11,7 +11,7 @@ const Customers = () => {
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [sourceFilter, setSourceFilter] = useState("");
   const [showModal, setShowModal] = useState(false);
-  const [editingCustomer, setEditingCustomer] = useState<Customer | null>(null);
+  const [editingCustomer, setEditingCustomer] = useState<CustomerListItem | null>(null);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -28,7 +28,7 @@ const Customers = () => {
     try {
       setLoading(true);
       const params = new URLSearchParams();
-      if (search) params.append("search", search);
+      if (debouncedSearch) params.append("search", debouncedSearch);
       if (sourceFilter) params.append("source", sourceFilter);
 
       const response = await api.get(`/customers?${params.toString()}`);
@@ -51,7 +51,7 @@ const Customers = () => {
     }
   };
 
-  const handleEdit = (customer: Customer) => {
+  const handleEdit = (customer: CustomerListItem) => {
     setEditingCustomer(customer);
     setShowModal(true);
   };
@@ -64,22 +64,14 @@ const Customers = () => {
 
   const getSourceBadge = (source: string) => {
     const colors: Record<string, string> = {
-      WHATSAPP: "#25d366",
-      EMAIL: "#4285f4",
-      MANUAL: "#6b7280",
-      WEBSITE: "#8b5cf6",
-      OTHER: "#9ca3af",
+      WHATSAPP: "bg-green-500",
+      EMAIL: "bg-blue-500",
+      MANUAL: "bg-gray-500",
+      WEBSITE: "bg-purple-500",
+      OTHER: "bg-gray-400",
     };
     return (
-      <span
-        style={{
-          padding: "2px 8px",
-          borderRadius: "12px",
-          fontSize: "12px",
-          color: "white",
-          backgroundColor: colors[source] || "#9ca3af",
-        }}
-      >
+      <span className={`px-2 py-0.5 rounded-full text-xs text-white ${colors[source] || "bg-gray-400"}`}>
         {source}
       </span>
     );
@@ -87,47 +79,28 @@ const Customers = () => {
 
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "20px" }}>
-        <h2>Customers</h2>
+      <div className="flex justify-between items-center mb-5">
+        <h2 className="text-xl font-semibold">Customers</h2>
         <button
           onClick={() => setShowModal(true)}
-          style={{
-            padding: "10px 20px",
-            backgroundColor: "#4ade80",
-            color: "white",
-            border: "none",
-            borderRadius: "6px",
-            cursor: "pointer",
-            fontWeight: "500",
-          }}
+          className="px-5 py-2.5 bg-green-400 text-white rounded-md font-medium hover:bg-green-500 transition-colors cursor-pointer"
         >
           + Add Customer
         </button>
       </div>
 
-      <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
+      <div className="flex gap-3 mb-5">
         <input
           type="text"
           placeholder="Search customers..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          style={{
-            flex: 1,
-            padding: "10px 15px",
-            border: "1px solid #ddd",
-            borderRadius: "6px",
-            fontSize: "14px",
-          }}
+          className="flex-1 px-4 py-2.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-400"
         />
         <select
           value={sourceFilter}
           onChange={(e) => setSourceFilter(e.target.value)}
-          style={{
-            padding: "10px 15px",
-            border: "1px solid #ddd",
-            borderRadius: "6px",
-            fontSize: "14px",
-          }}
+          className="px-4 py-2.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-400"
         >
           <option value="">All Sources</option>
           <option value="WHATSAPP">WhatsApp</option>
@@ -138,79 +111,49 @@ const Customers = () => {
       </div>
 
       {loading ? (
-        <div style={{ textAlign: "center", padding: "40px" }}>Loading...</div>
+        <div className="text-center py-10 text-gray-500">Loading...</div>
       ) : customers.length === 0 ? (
-        <div style={{ textAlign: "center", padding: "40px", color: "#666" }}>
-          No customers found
-        </div>
+        <div className="text-center py-10 text-gray-500">No customers found</div>
       ) : (
-        <div style={{ background: "white", borderRadius: "8px", overflow: "hidden" }}>
-          <table style={{ width: "100%", borderCollapse: "collapse" }}>
+        <div className="bg-white rounded-lg overflow-hidden">
+          <table className="w-full">
             <thead>
-              <tr style={{ borderBottom: "1px solid #eee", textAlign: "left" }}>
-                <th style={{ padding: "15px" }}>Name</th>
-                <th style={{ padding: "15px" }}>Company</th>
-                <th style={{ padding: "15px" }}>Phone</th>
-                <th style={{ padding: "15px" }}>Email</th>
-                <th style={{ padding: "15px" }}>Source</th>
-                <th style={{ padding: "15px" }}>Leads</th>
-                <th style={{ padding: "15px" }}>Actions</th>
+              <tr className="border-b border-gray-100 text-left">
+                <th className="px-4 py-3 font-medium">Name</th>
+                <th className="px-4 py-3 font-medium">Company</th>
+                <th className="px-4 py-3 font-medium">Phone</th>
+                <th className="px-4 py-3 font-medium">Email</th>
+                <th className="px-4 py-3 font-medium">Source</th>
+                <th className="px-4 py-3 font-medium">Leads</th>
+                <th className="px-4 py-3 font-medium">Actions</th>
               </tr>
             </thead>
             <tbody>
               {customers.map((customer) => (
-                <tr
-                  key={customer.id}
-                  style={{ borderBottom: "1px solid #eee" }}
-                >
-                  <td style={{ padding: "15px" }}>
+                <tr key={customer.id} className="border-b border-gray-100">
+                  <td className="px-4 py-3">
                     <Link
                       to={`/customers/${customer.id}`}
-                      style={{ color: "#333", textDecoration: "none", fontWeight: "500" }}
+                      className="text-gray-800 font-medium hover:text-green-500 no-underline"
                     >
                       {customer.name}
                     </Link>
                   </td>
-                  <td style={{ padding: "15px", color: "#666" }}>
-                    {customer.companyName || "-"}
-                  </td>
-                  <td style={{ padding: "15px", color: "#666" }}>
-                    {customer.phone || "-"}
-                  </td>
-                  <td style={{ padding: "15px", color: "#666" }}>
-                    {customer.email || "-"}
-                  </td>
-                  <td style={{ padding: "15px" }}>
-                    {getSourceBadge(customer.source)}
-                  </td>
-                  <td style={{ padding: "15px", color: "#666" }}>
-                    {customer._count.leads}
-                  </td>
-                  <td style={{ padding: "15px" }}>
+                  <td className="px-4 py-3 text-gray-500">{customer.companyName || "-"}</td>
+                  <td className="px-4 py-3 text-gray-500">{customer.phone || "-"}</td>
+                  <td className="px-4 py-3 text-gray-500">{customer.email || "-"}</td>
+                  <td className="px-4 py-3">{getSourceBadge(customer.source)}</td>
+                  <td className="px-4 py-3 text-gray-500">{customer._count.leads}</td>
+                  <td className="px-4 py-3">
                     <button
                       onClick={() => handleEdit(customer)}
-                      style={{
-                        padding: "5px 10px",
-                        marginRight: "5px",
-                        backgroundColor: "#3b82f6",
-                        color: "white",
-                        border: "none",
-                        borderRadius: "4px",
-                        cursor: "pointer",
-                      }}
+                      className="px-3 py-1.5 bg-blue-500 text-white text-sm rounded cursor-pointer hover:bg-blue-600 mr-2"
                     >
                       Edit
                     </button>
                     <button
                       onClick={() => handleDelete(customer.id)}
-                      style={{
-                        padding: "5px 10px",
-                        backgroundColor: "#dc2626",
-                        color: "white",
-                        border: "none",
-                        borderRadius: "4px",
-                        cursor: "pointer",
-                      }}
+                      className="px-3 py-1.5 bg-red-500 text-white text-sm rounded cursor-pointer hover:bg-red-600"
                     >
                       Delete
                     </button>
@@ -223,10 +166,7 @@ const Customers = () => {
       )}
 
       {showModal && (
-        <CustomerModal
-          customer={editingCustomer}
-          onClose={handleModalClose}
-        />
+        <CustomerModal customer={editingCustomer} onClose={handleModalClose} />
       )}
     </div>
   );

@@ -1,5 +1,7 @@
-import prisma from "../src/config/prisma.js";
+import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
+
+const prisma = new PrismaClient();
 
 async function main() {
   const adminEmail = "admin@crm.com";
@@ -9,26 +11,39 @@ async function main() {
     where: { email: adminEmail },
   });
 
-  if (existingAdmin) {
+  if (!existingAdmin) {
+    const passwordHash = await bcrypt.hash(adminPassword, 12);
+    await prisma.user.create({
+      data: {
+        name: "Admin",
+        email: adminEmail,
+        passwordHash,
+        role: "ADMIN",
+      },
+    });
+    console.log("Admin user created");
+  } else {
     console.log("Admin user already exists");
-    return;
   }
 
-  const passwordHash = await bcrypt.hash(adminPassword, 12);
+  const stages = [
+    { id: "new-lead", name: "New Lead", order: 1 },
+    { id: "contacted", name: "Contacted", order: 2 },
+    { id: "qualified", name: "Qualified", order: 3 },
+    { id: "quotation-sent", name: "Quotation Sent", order: 4 },
+    { id: "negotiation", name: "Negotiation", order: 5 },
+    { id: "won", name: "Won", order: 6 },
+  ];
 
-  const admin = await prisma.user.create({
-    data: {
-      name: "Admin",
-      email: adminEmail,
-      passwordHash,
-      role: "ADMIN",
-    },
-  });
+  for (const stage of stages) {
+    await prisma.pipelineStage.upsert({
+      where: { id: stage.id },
+      update: {},
+      create: stage,
+    });
+  }
 
-  console.log("Admin user created:", {
-    email: admin.email,
-    role: admin.role,
-  });
+  console.log("Pipeline stages seeded");
 }
 
 main()
